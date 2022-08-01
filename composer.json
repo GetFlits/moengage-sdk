@@ -14,7 +14,7 @@
   },
   "autoload": {
     "psr-4": {
-      "flits\\MoEngage": "src/"
+      "Flits\\MoEngage\\": "src/"
     }
   },
   "extra": {
