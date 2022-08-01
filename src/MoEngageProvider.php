@@ -14,7 +14,7 @@ class MoEngageProvider {
     public $HEADERS;
     public $VERSION = 'v1';
     public $DATA_CENTER;
-
+    public $EXTRA_CONFIG;
     public $client;
 
     function __construct($config) {
@@ -23,8 +23,13 @@ class MoEngageProvider {
         $this->AUTH = $config['authorization'] ?? [];  // Authorization username and password
         $this->VERSION = $config['version'] ?? 'v1'; // version of the request as per moenagage
         $this->DATA_CENTER = $config['data_center'] ?? 1; // version of the request as per moenagage
+        $this->EXTRA_CONFIG = $config['EXTRA_CONFIG'] ?? []; // Extra Guzzle/client config for api call
         $this->setupBaseURL();
-        $this->client = new Client([
+        $this->setupClient();
+    }
+
+    function setupClient() {
+        $config = [
             'base_uri' => $this->BASE_URL,
             'timeout' => 2.0,
             'auth' => $this->AUTH,
@@ -32,9 +37,11 @@ class MoEngageProvider {
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
             ],
             'headers' => $this->HEADERS,
-            'debug' => true
-        ]);
+        ];
+        $config = array_merge($config, $this->EXTRA_CONFIG);
+        $this->client = new Client($config);
     }
+
     function setupBaseURL() {
         $this->setAPIVersion();
         $this->setAPIDataCenter();
