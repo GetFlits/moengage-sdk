@@ -3,13 +3,12 @@
 namespace Flits\MoEngage;
 
 use GuzzleHttp\Client;
-use App\Utility;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7;
-use App\Classes\Integration\MoEngage\MoEngageException;
+use Flits\MoEngage\MoEngageException;
 
 class MoEngageProvider {
-    public $BASE_URL = "https://api-0<DATA_CENTER>.moengage.com";
+    public $BASE_URL = "https://api-0<DATA_CENTER>.moengage.com/<VERSION>/";
     public $APP_ID;
     public $HEADERS;
     public $VERSION = 'v1';
@@ -48,7 +47,7 @@ class MoEngageProvider {
     }
 
     function setAPIVersion() {
-        $this->BASE_URL .= "/" . $this->VERSION . "/";
+        $this->BASE_URL = str_replace('<VERSION>', $this->VERSION, $this->BASE_URL);
     }
 
     function setAPIDataCenter() {
